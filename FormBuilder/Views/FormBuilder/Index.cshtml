@@ -1,0 +1,82 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<style>
+    .required-field
+    {
+        color:red;
+    }
+</style>
+<div class="row">
+    <div class="col-md-12">
+        <div>
+            <div class="container-fluid" style="margin-bottom:20px;">
+                <div class="row">
+                    <div class="col-md-3">
+                        <label for="" class="col-form-label">Title</label>
+                        <span class="title-error required-field">*</span>
+                        <input id="title" type="text" class="form-control" />
+                    </div>
+                    <div class="col-md-3">
+                        <label for="" class="col-form-label">Name</label>
+                        <span class="name-error required-field">*</span>
+                        <input id="name" type="text" class="form-control" />
+                    </div>
+                    <div class="col-md-3">
+                        <label for="" class="col-form-label">Display as</label>
+                        <select id="formtype" class="form-control" onchange="ChangeFormType()">
+                            <option value="form">Form</option>
+                            <option value="wizard">Wizard</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="" class="col-form-label"></label>
+                        <input onclick="SaveForm();" type="button" value="Save" class="form-control btn btn-primary" />
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="page-content">
+                <div class="container-fluid">
+                    <div id="builder"></div>
+                </div>
+            </div>
+
+
+            @*<div class="col-sm-4">
+                <h3 class="text-center text-muted">as JSON Schema</h3>
+                <div class="card card-body bg-light jsonviewer">
+                    <pre id="json"></pre>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-sm-8 offset-sm-2">
+                    <h3 class="text-center text-muted">which creates a Submission JSON</h3>
+                    <div class="card card-body bg-light jsonviewer">
+                        <pre id="subjson"></pre>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+
+
+            <div class="page-content">
+                <div class="container-fluid">
+                    <div id="formio"></div>
+                </div>
+            </div>*@
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/ecmascript">
+        $(document).ready(function () {
+            BindForm();
+        });
+    </script>
+}

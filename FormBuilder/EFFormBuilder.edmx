@@ -1,0 +1,302 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="DotNetFormBuilderModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Doctor">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="FormData">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FormId" Type="int" />
+          <Property Name="DataJSON" Type="nvarchar(max)" />
+          <Property Name="PatientID" Type="int" />
+          <Property Name="AppointmentID" Type="int" />
+          <Property Name="Date" Type="datetime" />
+          <Property Name="IsDeleted" Type="bit" />
+          <Property Name="Deletedby" Type="int" />
+          <Property Name="Deleteddate" Type="datetime" />
+          <Property Name="UpdatedBy" Type="int" />
+          <Property Name="UpdatedDate" Type="datetime" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="DoctorId" Type="int" />
+        </EntityType>
+        <EntityType Name="FormInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FormName" Type="nvarchar" MaxLength="200" />
+          <Property Name="FormTitle" Type="nvarchar" MaxLength="200" />
+          <Property Name="FormType" Type="nvarchar" MaxLength="50" />
+          <Property Name="FormJSON" Type="nvarchar(max)" />
+          <Property Name="IsUse" Type="bit" />
+          <Property Name="IsDeleted" Type="bit" />
+          <Property Name="IsDisable" Type="bit" />
+          <Property Name="IsLocked" Type="bit" />
+        </EntityType>
+        <EntityType Name="Patient">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <Association Name="FK_FormData_Doctor">
+          <End Role="Doctor" Type="Self.Doctor" Multiplicity="0..1" />
+          <End Role="FormData" Type="Self.FormData" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Doctor">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FormData">
+              <PropertyRef Name="DoctorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FormData_FormInfo">
+          <End Role="FormInfo" Type="Self.FormInfo" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="FormData" Type="Self.FormData" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FormInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FormData">
+              <PropertyRef Name="FormId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FormData_Patient">
+          <End Role="Patient" Type="Self.Patient" Multiplicity="0..1" />
+          <End Role="FormData" Type="Self.FormData" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FormData">
+              <PropertyRef Name="PatientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DotNetFormBuilderModelStoreContainer">
+          <EntitySet Name="Doctor" EntityType="Self.Doctor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FormData" EntityType="Self.FormData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FormInfo" EntityType="Self.FormInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Patient" EntityType="Self.Patient" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_FormData_Doctor" Association="Self.FK_FormData_Doctor">
+            <End Role="Doctor" EntitySet="Doctor" />
+            <End Role="FormData" EntitySet="FormData" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FormData_FormInfo" Association="Self.FK_FormData_FormInfo">
+            <End Role="FormInfo" EntitySet="FormInfo" />
+            <End Role="FormData" EntitySet="FormData" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FormData_Patient" Association="Self.FK_FormData_Patient">
+            <End Role="Patient" EntitySet="Patient" />
+            <End Role="FormData" EntitySet="FormData" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DotNetFormBuilderModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="FormInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FormName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="FormJSON" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="FormTitle" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="FormType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsUse" Type="Boolean" />
+          <NavigationProperty Name="FormDatas" Relationship="DotNetFormBuilderModel.FK_FormData_FormInfo" FromRole="FormInfo" ToRole="FormData" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="IsDisable" Type="Boolean" />
+          <Property Name="IsLocked" Type="Boolean" />
+        </EntityType>
+        <EntityContainer Name="DotNetFormBuilderEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="FormInfoes" EntityType="Self.FormInfo" />
+          <EntitySet Name="Patients" EntityType="DotNetFormBuilderModel.Patient" />
+          <EntitySet Name="FormDatas" EntityType="DotNetFormBuilderModel.FormData" />
+          <AssociationSet Name="FK_FormData_FormInfo" Association="DotNetFormBuilderModel.FK_FormData_FormInfo">
+            <End Role="FormInfo" EntitySet="FormInfoes" />
+            <End Role="FormData" EntitySet="FormDatas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FormData_Patient" Association="DotNetFormBuilderModel.FK_FormData_Patient">
+            <End Role="Patient" EntitySet="Patients" />
+            <End Role="FormData" EntitySet="FormDatas" />
+          </AssociationSet>
+          <EntitySet Name="Doctors" EntityType="DotNetFormBuilderModel.Doctor" />
+          <AssociationSet Name="FK_FormData_Doctor" Association="DotNetFormBuilderModel.FK_FormData_Doctor">
+            <End Role="Doctor" EntitySet="Doctors" />
+            <End Role="FormData" EntitySet="FormDatas" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Patient">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="FormDatas" Relationship="DotNetFormBuilderModel.FK_FormData_Patient" FromRole="Patient" ToRole="FormData" />
+        </EntityType>
+        <EntityType Name="FormData">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FormId" Type="Int32" />
+          <Property Name="DataJSON" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PatientID" Type="Int32" />
+          <Property Name="AppointmentID" Type="Int32" />
+          <Property Name="Date" Type="DateTime" Precision="3" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="Deletedby" Type="Int32" />
+          <Property Name="Deleteddate" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedBy" Type="Int32" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="FormInfo" Relationship="DotNetFormBuilderModel.FK_FormData_FormInfo" FromRole="FormData" ToRole="FormInfo" />
+          <NavigationProperty Name="Patient" Relationship="DotNetFormBuilderModel.FK_FormData_Patient" FromRole="FormData" ToRole="Patient" />
+          <Property Name="DoctorId" Type="Int32" />
+          <NavigationProperty Name="Doctor" Relationship="DotNetFormBuilderModel.FK_FormData_Doctor" FromRole="FormData" ToRole="Doctor" />
+        </EntityType>
+        <Association Name="FK_FormData_FormInfo">
+          <End Type="DotNetFormBuilderModel.FormInfo" Role="FormInfo" Multiplicity="0..1" />
+          <End Type="DotNetFormBuilderModel.FormData" Role="FormData" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FormInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FormData">
+              <PropertyRef Name="FormId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FormData_Patient">
+          <End Type="DotNetFormBuilderModel.Patient" Role="Patient" Multiplicity="0..1" />
+          <End Type="DotNetFormBuilderModel.FormData" Role="FormData" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FormData">
+              <PropertyRef Name="PatientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Doctor">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="FormDatas" Relationship="DotNetFormBuilderModel.FK_FormData_Doctor" FromRole="Doctor" ToRole="FormData" />
+        </EntityType>
+        <Association Name="FK_FormData_Doctor">
+          <End Type="DotNetFormBuilderModel.Doctor" Role="Doctor" Multiplicity="0..1" />
+          <End Type="DotNetFormBuilderModel.FormData" Role="FormData" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Doctor">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FormData">
+              <PropertyRef Name="DoctorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DotNetFormBuilderModelStoreContainer" CdmEntityContainer="DotNetFormBuilderEntities">
+          <EntitySetMapping Name="FormInfoes">
+            <EntityTypeMapping TypeName="DotNetFormBuilderModel.FormInfo">
+              <MappingFragment StoreEntitySet="FormInfo">
+                <ScalarProperty Name="IsLocked" ColumnName="IsLocked" />
+                <ScalarProperty Name="IsDisable" ColumnName="IsDisable" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsUse" ColumnName="IsUse" />
+                <ScalarProperty Name="FormType" ColumnName="FormType" />
+                <ScalarProperty Name="FormTitle" ColumnName="FormTitle" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="FormName" ColumnName="FormName" />
+                <ScalarProperty Name="FormJSON" ColumnName="FormJSON" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Patients">
+            <EntityTypeMapping TypeName="DotNetFormBuilderModel.Patient">
+              <MappingFragment StoreEntitySet="Patient">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FormDatas">
+            <EntityTypeMapping TypeName="DotNetFormBuilderModel.FormData">
+              <MappingFragment StoreEntitySet="FormData">
+                <ScalarProperty Name="DoctorId" ColumnName="DoctorId" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="Deleteddate" ColumnName="Deleteddate" />
+                <ScalarProperty Name="Deletedby" ColumnName="Deletedby" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="AppointmentID" ColumnName="AppointmentID" />
+                <ScalarProperty Name="PatientID" ColumnName="PatientID" />
+                <ScalarProperty Name="DataJSON" ColumnName="DataJSON" />
+                <ScalarProperty Name="FormId" ColumnName="FormId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Doctors">
+            <EntityTypeMapping TypeName="DotNetFormBuilderModel.Doctor">
+              <MappingFragment StoreEntitySet="Doctor">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

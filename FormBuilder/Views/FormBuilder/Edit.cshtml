@@ -1,0 +1,52 @@
+﻿@model FormBuilder.FormInfo
+@{
+    ViewBag.Title = "Home Page";
+}
+<div class="row">
+    <div class="col-md-12">
+        <div>
+            <div class="container-fluid" style="margin-bottom:20px;">
+                <div class="row">
+                    <div class="col-md-3">
+                        <label for="" class="col-form-label">Title</label>
+                        <input id="title" type="text" class="form-control" />
+                    </div>
+                    <div class="col-md-3">
+                        <label for="" class="col-form-label">Name</label>
+                        <input id="name" type="text" class="form-control" />
+                    </div>
+                    <div class="col-md-3">
+                        <label for="" class="col-form-label">Display as</label>
+                        <select id="formtype" class="form-control">
+                            <option value="form">Form</option>
+                            <option value="wizard">Wizard</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="" class="col-form-label"></label>
+                        <input onclick="UpdateForm(@Model.Id);" type="button" value="Save" class="form-control btn btn-primary" />
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="page-content">
+                <div class="container-fluid">
+                    <div id="builder"></div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+@section Scripts {
+    <script type="text/ecmascript">
+        $(document).ready(function () {
+
+
+            EditForm(@Model.Id, '@Model.FormName', '@Model.FormTitle', '@Model.FormType', '@Model.IsUse', '@HttpUtility.HtmlDecode(Model.FormJSON)');
+        });
+    </script>
+}
+

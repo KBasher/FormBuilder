@@ -1,0 +1,90 @@
+﻿@model IList<FormBuilder.FormInfo>
+@{
+    ViewBag.Title = "List";
+}
+
+<h2>@ViewBag.Title.</h2>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="container" style="margin-bottom:20px;">
+            <div class="row">
+
+                <div class="col-md-3">
+                    <label for="" class="col-form-label">Patient</label>
+                    <select id="patient" class="form-control" onchange="SelectPatient(this, 'form-list-filter');">
+                        <option value="0">Select....</option>
+                        @{
+                            foreach (var patient in ViewBag.Patients)
+                            {
+                                if (ViewBag.SelectedId == patient.Id)
+                                {
+                                    <option selected value="@patient.Id">@patient.Name</option>
+                                }
+                                else
+                                {
+                                    <option value="@patient.Id">@patient.Name</option>
+                                }
+
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div id="form-list-container" class="dataSection">
+    @*<table id="form-list-filter" class="table-form table-bordered table table-striped">
+        <thead>
+            <tr class="table-header-row">
+            </tr>
+        </thead>
+        <tbody class="table-body">
+        </tbody>
+    </table>*@
+</div>
+
+
+<div class="filter-popup" onclick="clickFilterPopup(this, event)">
+    <div onclick="clicksortascending(this, event)" class="sort-ascending">
+        <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+        Sort Ascending
+    </div>
+    <div onclick="clicksortdescending(this, event)" class="sort-descending">
+        <i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>
+        Sort Descending
+    </div>
+    <div onclick="clicksortclear(this, event)" class="clear-sort">
+        <i class="fa fa-eraser" aria-hidden="true"></i>
+        Clear Sort
+    </div>
+    <div class="filter-container">
+        <div class="input-container">
+            <input class="searchinput" onkeyup="StartFilter(this, event)" type="text" />
+            <i class="filter-search-text fa fa-times" onclick="ClearFilterText(this, event)" aria-hidden="true"></i>
+        </div>
+        <div class="filter-items">
+            <div class="container">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id='loadingmessage' style='display:none'>
+    <i class="fa fa-spinner fa-spin"></i>
+</div>
+
+@section Scripts {
+    <script type="text/ecmascript">
+        $(document).ready(function () {
+            //GetFormByPatient(ele);
+            if(@ViewBag.SelectedId != 0)
+            {
+                SelectPatient($("#patient"), 'form-list-filter');
+            }
+        });
+    </script>
+}

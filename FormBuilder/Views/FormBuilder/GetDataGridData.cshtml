@@ -1,0 +1,227 @@
+﻿@model FormBuilder.Models.FormDataModelSort
+@{
+    Layout = null;
+}
+
+
+<div style="position:relative; clear:both;">
+    <div style="width:50%; display:inline-block;">
+        <h2>Data List</h2>
+    </div>
+    <div style="width:50%; float:right;  display:inline-block;">
+        <h3>Total Records: @ViewBag.TotalRecord</h3>
+    </div>
+</div>
+
+<table id="data-grid" class="table-data table-bordered table table-striped">
+    <thead>
+        <tr>
+            <th class="Idsort table-header" scope="col">
+                Id
+                <div class="header-outer-filter-container">
+                    <i class="filter-font-icon"></i>
+                    <div class="header-filter-container">
+                        <span class="filter-icon"
+                              onclick="showfilterPopup('Id','custom',@ViewBag.FormId,this, event);">
+                            <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                </div>
+            </th>
+            <th class="SystemDatesort table-header" scope="col">
+                Date
+                <div class="header-outer-filter-container">
+                    <i class="filter-font-icon"></i>
+                    <div class="header-filter-container">
+                        <span class="filter-icon"
+                              onclick="showfilterPopup('SystemDate','custom',@ViewBag.FormId,this, event);">
+                            <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                </div>
+            </th>
+            <th class="PatientNamesort table-header" scope="col">
+                Patient Name
+                <div class="header-outer-filter-container">
+                    <i class="filter-font-icon"></i>
+                    <div class="header-filter-container">
+                        <span class="filter-icon"
+                              onclick="showfilterPopup('PatientName','custom',@ViewBag.FormId,this, event);">
+                            <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                </div>
+            </th>
+            <th class="DoctorNamesort table-header" scope="col">
+                Doctor Name
+                <div class="header-outer-filter-container">
+                    <i class="filter-font-icon"></i>
+                    <div class="header-filter-container">
+                        <span class="filter-icon"
+                              onclick="showfilterPopup('DoctorName','custom',@ViewBag.FormId,this, event);">
+                            <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                </div>
+            </th>
+
+            @foreach (var item in Model.DataHeader)
+            {
+                <th class="@string.Concat(item.key + "sort")" table-header" scope="col">
+                    @item.label
+                    <div class="header-outer-filter-container">
+                        <i class="filter-font-icon"></i>
+                        <div class="header-filter-container">
+                            <span class="filter-icon @(item.type == "file" || item.type == "signature" ? "filter-hide" : "")"
+                                  onclick="showfilterPopup('@item.key','@item.type',@ViewBag.FormId,this, event);">
+                                <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                            </span>
+                        </div>
+                    </div>
+                </th>
+            }
+
+            <th class="SystemCreateDatesort table-header" scope="col">
+                Create Date
+                <div class="header-outer-filter-container">
+                    <i class="filter-font-icon"></i>
+                    <div class="header-filter-container">
+                        <span class="filter-icon"
+                              onclick="showfilterPopup('SystemCreateDate','custom',@ViewBag.FormId,this, event);">
+                            <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                </div>
+            </th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+
+    @foreach (var item in Model.DataBody)
+    {
+<tr>
+
+    <td class="Idsort">@item.id</td>
+    <td class="SystemDatesort">@item.Date</td>
+    <td class="PatientNamesort">@item.patientName</td>
+    <td class="DoctorNamesort">@item.doctorName</td>
+
+    @foreach (var data in item.DataDetailsList)
+    {
+        if (data.comtype != "file" && data.comtype != "signature")
+        {
+            <td class="@string.Concat(data.key, "sort")">@data.value</td>
+        }
+        else
+        {
+            if (!string.IsNullOrEmpty(data.fileName))
+            {
+                if (data.fileName.Contains(".pdf"))
+                {
+                    <td class="@string.Concat(data.key, "sort")">
+                        <a target="_blank" href="/FormBuilder/ViewImage?Id=@item.id &key=@data.key">
+                            <img class="file-img" src='/Content/images/pdf.png' />
+                        </a>
+                    </td>
+                }
+                else if (data.fileName.Contains(".docx") || data.fileName.Contains(".doc"))
+                {
+                    <td class="@string.Concat(data.key, "sort")">
+                        <a download href="@data.fileBase64">
+                            <img class="file-img" src='/Content/images/docx.jpg' />
+                        </a>
+                    </td>
+                }
+                else if (data.fileName.Contains(".xlsx") || data.fileName.Contains(".xls"))
+                {
+                    <td class="@string.Concat(data.key, "sort")">
+                        <a download href="@data.fileBase64">
+                            <img class="file-img" src='/Content/images/xcel.png' />
+                        </a>
+                    </td>
+                }
+                else if (data.fileName.Contains(".pptx") || data.fileName.Contains(".ppt"))
+                {
+                    <td class="@string.Concat(data.key, "sort")">
+                        <a download href="@data.fileBase64">
+                            <img class="file-img" src='/Content/images/pptx.png' />
+                        </a>
+                    </td>
+                }
+                else if (data.fileName.Contains(".txt"))
+                {
+                    <td class="@string.Concat(data.key, "sort")">
+                        <a download href="@data.fileBase64">
+                            <img class="file-img" src='/Content/images/text.png' />
+                        </a>
+                    </td>
+                }
+                else
+                {
+                    <td class="@string.Concat(data.key, "sort")">
+                        <a href="/FormBuilder/ViewImage?Id=@item.id &key=@data.key">
+                            <img class="file-img" src="@data.fileBase64" />
+                        </a>
+                    </td>
+                }
+            }
+            else
+            {
+                <td class="@string.Concat(data.key, "sort")"></td>
+            }
+
+        }
+    }
+
+
+    <td class="SystemCreateDatesort">@item.CreateDate</td>
+
+    <td><a href="/FormBuilder/ViewEdit?Id=@item.id" class='btn btn-success'>Edit</a></td>
+    <td>
+        <button onclick="DeleteData(@item.id, @ViewBag.FormId)" class="btn btn-success">Delete</button>
+    </td>
+    @*<td>
+            <a href="Edit?Id=@item.id" class="btn btn-success">Edit</a>
+        </td>
+        <td>
+            <a href="View?Id=@item.id" class="btn btn-success">View</a>
+        </td>
+        <td>
+            <a href="DataGrid?Id=@item.id" class="btn btn-success">Data</a>
+        </td>
+        <td>
+            <button onclick="DeleteForm(@item.id)" class="btn btn-success">Delete</button>
+        </td>*@
+</tr>
+    }
+</table>
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+        <li class="page-item"><a class="page-link" onclick="clickPreviousPage(@(ViewBag.SelectedPageNumber -1) ,event)">Previous</a></li>
+        @foreach (var page in Model.Pages)
+        {
+            if (page.PageNumber == ViewBag.SelectedPageNumber)
+            {
+                <li class="page-item active">
+                    <a class="page-link" onclick="clickOnPaging(@page.PageNumber,@page.PageStart,@page.PageEnd,event)">@page.PageNumber</a>
+                </li>
+            }
+            else
+            {
+                <li class="page-item">
+                    <a class="page-link" onclick="clickOnPaging(@page.PageNumber,@page.PageStart,@page.PageEnd,event)">@page.PageNumber</a>
+                </li>
+            }
+        }
+
+        <li class='page-item'><a class='page-link' onclick='clickNextPage(@(ViewBag.SelectedPageNumber + 1),event)'>Next</a></li>
+    </ul>
+</nav>
+
+
+<script type="text/ecmascript">
+    $(document).ready(function () {
+        totalPageCount = @Model.Pages.Count;
+    });
+</script>

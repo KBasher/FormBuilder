@@ -1,0 +1,25 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<style>
+    #viewpdf{
+        width:100%;
+        height: 800px;
+    }
+</style>
+
+<div class="row">
+    <div id="pdf-container" class="col-md-12">
+        <img id="viewimage" />
+        <object id="viewpdf"></object>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/ecmascript">
+        $(document).ready(function () {
+            ViewImage('@HttpUtility.HtmlDecode(ViewBag.DataJSON)', '@ViewBag.Key');
+        });
+    </script>
+}

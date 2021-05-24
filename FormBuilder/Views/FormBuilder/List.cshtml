@@ -1,0 +1,51 @@
+﻿@model IList<FormBuilder.FormInfo>
+@{
+    ViewBag.Title = "Form List";
+}
+
+@*<div style="position:relative; clear:both;">
+    <div style="width:50%; display:inline-block;">
+        <h2>@ViewBag.Title.</h2>
+    </div>
+    <div style="width:50%; float:right;  display:inline-block;">
+        <h5>Total Records:</h5>
+    </div>
+</div>*@
+
+
+<div id="form-list-container" class="dataSection">
+    
+</div>
+
+<div class="filter-popup" onclick="clickFilterPopup(this, event)">
+    <div onclick="clicksortascending(this, event, 'datagrid')" class="sort-ascending">
+        <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+        Sort Ascending
+    </div>
+    <div onclick="clicksortdescending(this, event)" class="sort-descending">
+        <i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>
+        Sort Descending
+    </div>
+    <div onclick="clicksortclear(this, event)" class="clear-sort">
+        <i class="fa fa-eraser" aria-hidden="true"></i>
+        Clear Sort
+    </div>
+    <div class="filter-container">
+        <div class="input-container">
+            <input class="searchinput" onkeyup="StartFilter(this, event)" type="text" />
+            <i class="filter-search-text fa fa-times" onclick="ClearFilterText(this, event)" aria-hidden="true"></i>
+        </div>
+        <div class="filter-items">
+            <div class="container">
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/ecmascript">
+        $(document).ready(function () {
+            LoadFormGrid("form-list");
+        });
+    </script>
+}

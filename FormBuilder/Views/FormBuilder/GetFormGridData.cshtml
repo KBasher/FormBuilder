@@ -1,0 +1,220 @@
+﻿@model FormBuilder.Models.FormGridModelSort
+@{
+    Layout = null;
+}
+
+
+
+<div style="position:relative; clear:both;">
+    <div style="width:50%; display:inline-block;">
+        <h2>Form List</h2>
+    </div>
+    <div style="width:50%; float:right;  display:inline-block;">
+        <h3>Total Records: @ViewBag.TotalRecord</h3>
+    </div>
+</div>
+
+@if (ViewBag.TableName == "form-list-filter")
+{
+    <table id="form-list-filter" class="table-data table-bordered table table-striped">
+        <thead>
+            <tr>
+                <th class='FormNamesort table-header' scope='col'>
+                    Form Name
+                    <div class="header-outer-filter-container">
+                        <i class="filter-font-icon"></i>
+                        <div class="header-filter-container">
+                            <span class="filter-icon" onclick="showfilterPopup('FormName','custom',0, this, event);"><i class="fa fa-chevron-down" aria-hidden="true"></i></span>
+                        </div>
+                    </div>
+                </th>
+                <th class='FormTitlesort table-header' scope='col'>
+                    Form Title
+                    <div class="header-outer-filter-container">
+                        <i class="filter-font-icon"></i>
+                        <div class="header-filter-container">
+                            <span class="filter-icon" onclick="showfilterPopup('FormTitle','custom',0, this, event);"><i class="fa fa-chevron-down" aria-hidden="true"></i></span>
+                        </div>
+                    </div>
+                </th>
+                <th class='FormTypesort table-header' scope='col'>
+                    Form Type
+                    <div class="header-outer-filter-container">
+                        <i class="filter-font-icon"></i>
+                        <div class="header-filter-container">
+                            <span class="filter-icon" onclick="showfilterPopup('FormType','custom',0, this, event);"><i class="fa fa-chevron-down" aria-hidden="true"></i></span>
+                        </div>
+                    </div>
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.DataBody)
+            {
+                <tr>
+
+                    <td class="FormNamesort">@item.FormName</td>
+                    <td class="FormTitlesort">@item.FormTitle</td>
+                    <td class="FormTypesort">@item.FormType</td>
+
+
+                    <td><a href="/FormBuilder/DataGrid?Id=@item.Id&PatientId=@ViewBag.PatientId" class='btn btn-success'>Data</a></td>
+                </tr>
+            }
+        </tbody>
+
+
+    </table>
+}
+else if (@ViewBag.TableName == "form-list")
+{
+    <table id="form-list" class="table-data table-bordered table table-striped">
+        <thead>
+            <tr>
+                <th class="Idsort table-header" scope="col">
+                    Id
+                    <div class="header-outer-filter-container">
+                        <i class="filter-font-icon"></i>
+                        <div class="header-filter-container">
+                            <span class="filter-icon"
+                                  onclick="showfilterPopup('Id','custom',0,this, event);">
+                                <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                            </span>
+                        </div>
+                    </div>
+                </th>
+                <th class='FormNamesort table-header' scope='col'>
+                    Form Name
+                    <div class="header-outer-filter-container">
+                        <i class="filter-font-icon"></i>
+                        <div class="header-filter-container">
+                            <span class="filter-icon" onclick="showfilterPopup('FormName','custom',0, this, event);"><i class="fa fa-chevron-down" aria-hidden="true"></i></span>
+                        </div>
+                    </div>
+                </th>
+                <th class='FormTitlesort table-header' scope='col'>
+                    Form Title
+                    <div class="header-outer-filter-container">
+                        <i class="filter-font-icon"></i>
+                        <div class="header-filter-container">
+                            <span class="filter-icon" onclick="showfilterPopup('FormTitle','custom',0, this, event);"><i class="fa fa-chevron-down" aria-hidden="true"></i></span>
+                        </div>
+                    </div>
+                </th>
+                <th class='FormTypesort table-header' scope='col'>
+                    Form Type
+                    <div class="header-outer-filter-container">
+                        <i class="filter-font-icon"></i>
+                        <div class="header-filter-container">
+                            <span class="filter-icon" onclick="showfilterPopup('FormType','custom',0, this, event);"><i class="fa fa-chevron-down" aria-hidden="true"></i></span>
+                        </div>
+                    </div>
+                </th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.DataBody)
+            {
+            <tr>
+                <td class="Idsort">@item.Id</td>
+                <td class="FormNamesort">@item.FormName</td>
+                <td class="FormTitlesort">@item.FormTitle</td>
+                <td class="FormTypesort">@item.FormType</td>
+
+                <td>
+                    @if (item.IsDisable == true || item.IsLocked == true)
+                    {
+                        <a href="" class="btn btn-secondary">Edit</a>
+                    }
+                    else
+                    {
+                        <a href="/FormBuilder/Edit?Id=@item.Id" class="btn btn-success">Edit</a>
+                    }
+                </td>
+                <td><a href="/FormBuilder/View?Id=@item.Id" class="btn btn-success">View</a></td>
+                <td><a href="/FormBuilder/DataGrid?Id=@item.Id" class="btn btn-success">Data</a></td>
+
+                <td>
+                    @if (item.IsDisable == true || item.IsLocked == true)
+                    {
+                        <button class="btn btn-secondary">Delete</button>
+                    }
+                    else
+                    {
+                        <button onclick="DeleteForm(@item.Id)" class="btn btn-success">Delete</button>
+                    }
+                </td>
+                <td>
+                    @if (item.IsDisable == true)
+                    {
+                        <input type="checkbox" checked onchange="DisableEnableForm(@item.Id, this)" /><span>&nbsp; Is Disable</span>
+                    }
+                    else
+                    {
+                        <input type="checkbox" onchange="DisableEnableForm(@item.Id, this)" /><span>&nbsp; Is Disable</span>
+                    }
+                </td>
+                <td>
+                    @if (item.IsLocked == true)
+                    {
+                        <input type="checkbox" checked onchange="LockUnlockForm(@item.Id, this)" /><span>&nbsp; Is Locked</span>
+                    }
+                    else
+                    {
+                        <input type="checkbox" onchange="LockUnlockForm(@item.Id, this)" /><span>&nbsp; Is Locked</span>
+                    }
+                </td>
+
+            </tr>
+            }
+        </tbody>
+
+
+    </table>
+}
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+        <li class="page-item"><a class="page-link" onclick="clickPreviousPage(@(ViewBag.SelectedPageNumber -1) ,event)">Previous</a></li>
+        @foreach (var page in Model.Pages)
+        {
+            if (page.PageNumber == ViewBag.SelectedPageNumber)
+            {
+                <li class="page-item active">
+                    <a class="page-link" onclick="clickOnPaging(@page.PageNumber,@page.PageStart,@page.PageEnd,event)">@page.PageNumber</a>
+                </li>
+            }
+            else
+            {
+                <li class="page-item">
+                    <a class="page-link" onclick="clickOnPaging(@page.PageNumber,@page.PageStart,@page.PageEnd,event)">@page.PageNumber</a>
+                </li>
+            }
+        }
+
+        <li class='page-item'><a class='page-link' onclick='clickNextPage(@(ViewBag.SelectedPageNumber + 1),event)'>Next</a></li>
+    </ul>
+</nav>
+
+
+<script type="text/ecmascript">
+    $(document).ready(function () {
+        totalPageCount = @Model.Pages.Count;
+    });
+</script>
+
+@*@section Scripts {
+        <script type="text/ecmascript">
+            $(document).ready(function () {
+                //selectedPageNumber = @ViewBag.SelectedPageNumber;
+                totalPageCount = @Model.Pages.Count;
+            });
+        </script>
+
+    }*@
